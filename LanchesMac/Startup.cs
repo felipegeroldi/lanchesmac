@@ -1,4 +1,9 @@
-﻿namespace LanchesMac;
+﻿using LanchesMac.Context;
+using LanchesMac.Repositories;
+using LanchesMac.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
+namespace LanchesMac;
 
 public class Startup
 {
@@ -11,6 +16,12 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+        services.AddScoped<ILancheRepository, LancheRepository>();
+        services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+
         services.AddControllersWithViews();
     }
 
